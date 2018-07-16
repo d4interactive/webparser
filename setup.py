@@ -1,7 +1,7 @@
 import os
 
 from setuptools import setup
-from nsfw import __version__
+from webparser import __version__
 
 ROOT = os.path.dirname(os.path.realpath(__file__))
 

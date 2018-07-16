@@ -1,10 +1,13 @@
-from urlparse import urlparse, urljoin
+import os
+
+from urllib.parse import urlparse, urljoin
 
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0",
     'Accept': 'application/atom+xml, application/rss+xml, application/xml;q=0.8, text/xml;q=0.6, */*;q=0.2',
     'Accept-Encoding': 'gzip, deflate',
 }
+
 
 def absolute_links_patch(doc, web_url):
     """Patching the invalid IPV6 URL. lxml was throwing an error due to which absolute links were
@@ -45,3 +48,10 @@ def make_complete_url(url, domain):
         return url
     else:
         return url
+
+
+def root_path():
+    dir = os.path.dirname(os.path.abspath(__file__))
+    split_form = dir.split("virtualenv/")
+    root_dir = split_form[0] + "virtualenv/" + split_form[1].split("/")[0]
+    return root_dir

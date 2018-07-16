@@ -1,5 +1,6 @@
 import requests
-from urlparse import urljoin
+
+from urllib.parse import urljoin
 
 from lxml.html import fromstring, HTMLParser
 from lxml import etree
@@ -44,7 +45,7 @@ def convert_to_doc(html, domain_for_absolute_link=None):
     return doc
 
 
-def is_rss_feed(html, website_url=None):
+def has_rss_feed(html, website_url=None):
     """
 
     :param html: HTML content of a web page.
@@ -62,12 +63,17 @@ def is_rss_feed(html, website_url=None):
     feed_links = []
     # if it has a website url, convert to absolute links.
     doc = convert_to_doc(html, website_url)
+
+    # checking the links if they contains the accepted mimetype, if they does, they have the RSS URL.
+
     for selector in ACCEPTED_MIMETYPES:
         links = doc.xpath(".//link[@type='{0}']/@href".format(selector))
         if links:
             for link in links:
                 if not link.__contains__('comments'):
                     feed_links.append(link)
+
+    # if there are no RSS URL found using above mechanism, run a fuzzy search for the website.
 
     if not feed_links:
         log.debug('Attempting for the /feed/ method to find the URL')
@@ -119,6 +125,9 @@ class FeedParser(object):
         return parsed_feed['entries'] or not parsed_feed['bozo']
 
     def parse(self, url=None, doc=None):
+        if not url and not doc:
+            if self.feed:
+                url = self.feed
         parsed = None
         feed = {}
         feed_average_words = []
@@ -127,7 +136,6 @@ class FeedParser(object):
             parsed = feedparser.parse(url)
         if doc:
             parsed = feedparser.parse(doc)
-
         if parsed:
             if self.has_entries(parsed):
                 # if the feed has entries, process them.
@@ -228,6 +236,8 @@ class FeedParser(object):
 
     def parse_links(self, url=None, doc=None):
         # TODO: return empty array instead of false.
+        # But, first need to see the use case for it.
+
         parsed = None
         if url:
             parsed = feedparser.parse(url)
@@ -248,12 +258,3 @@ class FeedParser(object):
                 return False
         else:
             return False
-
-
-def original_url(url, timeout=60):
-    try:
-        returned_url = Requests().get(url, timeout=timeout).url
-    except:
-        returned_url = Requests().get(url, use_proxy=True, timeout=timeout).url
-
-    return returned_url if returned_url else url
