@@ -24,7 +24,7 @@ setup(
     include_package_data=True,
     # Dependencies
     install_requires=[
-        'lxml, feedparser, requests',
+        "lxml", "feedparser", "requests",
     ],
     extras_require={
         'full': ['urllib3', 'certifi'],
