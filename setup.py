@@ -7,7 +7,7 @@ ROOT = os.path.dirname(os.path.realpath(__file__))
 
 setup(
     # Meta data
-    name='webparser',
+    name='webparser-py',
     version=__version__,
     author='Muhammad Azhar',
     author_email='azhar@contentstudio.io',

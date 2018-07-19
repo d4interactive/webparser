@@ -10,7 +10,13 @@ The library is compatible with Python3. Python2 is currently not supported.
 Usage
 -----
 
-Convert to Document
+Install the package using pip.
+ 
+```
+pip install webparser-py
+```
+
+**Convert to Document**
 
 Accept the html content document, convert it to the doc element, if we want to convert relative links to absolute links, 
 we pass the domain url to the absolute links.
@@ -25,6 +31,9 @@ doc = convert_to_doc('HTML content', 'http://yourwebsite.com')
 ```
 
 **class FeedParser()**
+
+Feed parser class is used for parsing the feed through the response content or using a URL.
+
 
 ```
 from webparser.parser import FeedParser

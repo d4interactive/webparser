@@ -1,5 +1,6 @@
 import unittest
 
+import lxml
 import requests
 
 from webparser.parser import convert_to_doc, FeedParser, fuzzy_url_search, has_rss_feed
@@ -20,7 +21,10 @@ class TestParser(unittest.TestCase):
 
     def test_convert_to_doc_with_text(self):
         res = convert_to_doc(self.english_text)
+
         if (res.text_content()):
+            assert True
+        if (isinstance(res, lxml.html.HtmlElement)):
             assert True
 
     def test_convert_to_doc_with_requests(self):
